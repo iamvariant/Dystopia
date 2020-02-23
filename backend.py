@@ -20,10 +20,10 @@ class mobilefacenet(object):
     def __init__(self):
         with tf.Graph().as_default():
             # define placeholder
-            self.inputs = tf.compat.v1.placeholder(name='img_inputs',
+            self.inputs = tf.placeholder(name='img_inputs',
                                          shape=[None, 112, 112, 3],
                                          dtype=tf.float32)
-            self.phase_train_placeholder = tf.compat.v1.placeholder_with_default(tf.constant(False, dtype=tf.bool),
+            self.phase_train_placeholder = tf.placeholder_with_default(tf.constant(False, dtype=tf.bool),
                                                                        shape=None,
                                                                        name='phase_train')
             # identity the input, for inference
@@ -36,20 +36,20 @@ class mobilefacenet(object):
             self.embeddings = tf.nn.l2_normalize(prelogits, 1, 1e-10, name='embeddings')
 
             # define sess
-            gpu_options = tf.compat.v1.GPUOptions(per_process_gpu_memory_fraction=0.9)
-            config = tf.compat.v1.ConfigProto(allow_soft_placement=True, log_device_placement=False,
+            gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.9)
+            config = tf.ConfigProto(allow_soft_placement=True, log_device_placement=False,
                                     gpu_options=gpu_options,
                                     )
             config.gpu_options.allow_growth = True
-            self.sess = tf.compat.v1.Session(config=config)
+            self.sess = tf.Session(config=config)
 
             # saver to load pretrained model or save model
             # MobileFaceNet_vars = [v for v in tf.trainable_variables() if v.name.startswith('MobileFaceNet')]
-            saver = tf.compat.v1.train.Saver(tf.compat.v1.trainable_variables())
+            saver = tf.train.Saver(tf.trainable_variables())
 
             # init all variables
-            self.sess.run(tf.compat.v1.global_variables_initializer())
-            self.sess.run(tf.compat.v1.local_variables_initializer())
+            self.sess.run(tf.global_variables_initializer())
+            self.sess.run(tf.local_variables_initializer())
 
             ckpt = tf.train.get_checkpoint_state('./tiny_model')
             saver.restore(self.sess, ckpt.model_checkpoint_path)

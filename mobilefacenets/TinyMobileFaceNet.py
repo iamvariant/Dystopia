@@ -113,7 +113,7 @@ def mobilenet_v2_base(inputs,
   if conv_defs is None:
     conv_defs = _CONV_DEFS
 
-  with tf.compat.v1.variable_scope(scope, 'MobileFaceNet', [inputs]):
+  with tf.variable_scope(scope, 'MobileFaceNet', [inputs]):
     with slim.arg_scope([slim.conv2d, slim.separable_conv2d], padding='SAME'):
 
       net = inputs
@@ -205,14 +205,14 @@ def mobilenet_v2(inputs,
     raise ValueError('Invalid input tensor rank, expected 4, was: %d' %
                      len(input_shape))
 
-  with tf.compat.v1.variable_scope(scope, 'MobileFaceNet', [inputs], reuse=reuse) as scope:
+  with tf.variable_scope(scope, 'MobileFaceNet', [inputs], reuse=reuse) as scope:
     with slim.arg_scope([slim.batch_norm, slim.dropout], is_training=is_training):
       net, end_points = mobilenet_v2_base(inputs, scope=scope, min_depth=min_depth, conv_defs=conv_defs)
 
-      with tf.compat.v1.variable_scope('Logits'):
+      with tf.variable_scope('Logits'):
         if global_pool:
           # Global average pooling.
-          net = tf.reduce_mean(input_tensor=net, axis=[1, 2], keepdims=True, name='global_pool')
+          net = tf.reduce_mean(net, [1, 2], keep_dims=True, name='global_pool')
           end_points['global_pool'] = net
         else:
           # Pooling with a fixed kernel size.
@@ -266,7 +266,7 @@ def _reduced_kernel_size_for_small_input(input_tensor, kernel_size):
   return kernel_size_out
 
 def prelu(input, name=''):
-    alphas = tf.compat.v1.get_variable(name=name + 'prelu_alphas',initializer=tf.constant(0.25,dtype=tf.float32,shape=[input.get_shape()[-1]]))
+    alphas = tf.get_variable(name=name + 'prelu_alphas',initializer=tf.constant(0.25,dtype=tf.float32,shape=[input.get_shape()[-1]]))
     pos = tf.nn.relu(input)
     neg = alphas * (input - abs(input)) * 0.5
     return pos + neg
@@ -294,7 +294,7 @@ def mobilenet_v2_arg_scope(is_training=True,
       # force in-place updates of mean and variance estimates
       'updates_collections': None,
       # Moving averages ends up in the trainable variables collection
-      'variables_collections': [ tf.compat.v1.GraphKeys.TRAINABLE_VARIABLES ],
+      'variables_collections': [ tf.GraphKeys.TRAINABLE_VARIABLES ],
   }
 
   # Set weight_decay for weights in Conv and InvResBlock layers.

@@ -10,8 +10,8 @@ class FaceDetector:
             gpu_memory_fraction: a float number.
             visible_device_list: a string.
         """
-        with tf.io.gfile.GFile(model_path, 'rb') as f:
-            graph_def = tf.compat.v1.GraphDef()
+        with tf.gfile.GFile(model_path, 'rb') as f:
+            graph_def = tf.GraphDef()
             graph_def.ParseFromString(f.read())
 
         graph = tf.Graph()
@@ -25,12 +25,12 @@ class FaceDetector:
             graph.get_tensor_by_name('import/num_boxes:0'),
         ]
 
-        gpu_options = tf.compat.v1.GPUOptions(
+        gpu_options = tf.GPUOptions(
             per_process_gpu_memory_fraction=gpu_memory_fraction,
             visible_device_list=visible_device_list
         )
-        config_proto = tf.compat.v1.ConfigProto(gpu_options=gpu_options, log_device_placement=False)
-        self.sess = tf.compat.v1.Session(graph=graph, config=config_proto)
+        config_proto = tf.ConfigProto(gpu_options=gpu_options, log_device_placement=False)
+        self.sess = tf.Session(graph=graph, config=config_proto)
 
     def __call__(self, image, score_threshold=0.5):
         """Detect faces.
