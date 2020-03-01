@@ -171,12 +171,12 @@ def remove_face(label, library=None):
     label_library = library[1]
     out_encoder = LabelEncoder()
     out_encoder.classes_ = library[2]
-  label = out_encoder.transform([label])
+    svm = library[3]
+  
   index = np.where(label_library==label)
   new_face_library = np.delete(face_library, index, axis=0)
-  new_label_library = np.delete(out_encoder.classes_, index, axis=0)
+  new_label_library = np.delete(label_library, index, axis=0)
   out_encoder.fit(new_label_library)
-  new_label_library = out_encoder.transform(new_label_library)
   new_library = list([new_face_library, new_label_library, out_encoder.classes_, svm])
   return new_library
 
@@ -196,19 +196,20 @@ def identify_face(face_pixels, library=None, threshold=0.7):
   face_row = in_encoder.transform(face_row)
   if len(label_library) >= 2:
     prediction = svm.predict(face_row)
+    prediction = out_encoder.inverse_transform(prediction)
   elif len(label_library) == 0:
     prediction = ["Unknown"]
     return prediction
   else:
     prediction = out_encoder.classes_[0]
+    
   ref_index = np.where(label_library == prediction)
-  ref_face = face_library[ref_index][0]
+  ref_face = face_library[ref_index]
   if distance(ref_face, face) < threshold:
-    prediction = out_encoder.inverse_transform(prediction)
+    return prediction
   else:
     prediction = ["Unknown"]
-  return prediction
-
+    return prediction
 # Identify and return classifications for ALL faces detected in an image
 def identify_all(image_array, library=None, threshold=0.7):
   faces = extract_faces(image_array)
