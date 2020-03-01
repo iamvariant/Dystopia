@@ -130,6 +130,39 @@ def add_face(face_pixels, label, library=None):
   new_library = list([new_face_library, new_label_library, out_encoder.classes_, svm])
   return new_library
 
+def add_person(face_pixel_list, label, library=None):
+  if library is None:
+    face_library = np.empty((0,128))
+    label_library = np.empty((0,))
+    out_encoder = LabelEncoder()
+    out_encoder.classes_ = []
+  else:
+    face_library = library[0]
+    label_library = library[1]
+    out_encoder = LabelEncoder()
+    out_encoder.classes_ = library[2]
+  for i in face_pixel_list:
+    face = embed_face(i[0])
+    face = np.expand_dims(face, axis=0)
+    face_library = np.append(face_library, face, axis=0)
+    label_library = np.append(label_library, label)
+  
+  # normalise input vectors  
+  in_encoder = Normalizer(norm='l2')
+  encoded_face_library = in_encoder.transform(face_library)
+  # label encode targets
+  out_encoder.fit(label_library)
+  encoded_label_library = out_encoder.transform(label_library)
+  # fit model
+  if len(out_encoder.classes_) >= 2:
+    svm = SVC(kernel='linear')
+    svm.fit(encoded_face_library, encoded_label_library)
+  else:
+    svm = None
+  
+  new_library = list([face_library, label_library, out_encoder.classes_, svm])
+  return new_library
+
 def remove_face(label, library=None):
   if library is None:
     return
@@ -138,12 +171,12 @@ def remove_face(label, library=None):
     label_library = library[1]
     out_encoder = LabelEncoder()
     out_encoder.classes_ = library[2]
-  label = out_encoder.transform([label])
+    svm = library[3]
+  
   index = np.where(label_library==label)
   new_face_library = np.delete(face_library, index, axis=0)
-  new_label_library = np.delete(out_encoder.classes_, index, axis=0)
+  new_label_library = np.delete(label_library, index, axis=0)
   out_encoder.fit(new_label_library)
-  new_label_library = out_encoder.transform(new_label_library)
   new_library = list([new_face_library, new_label_library, out_encoder.classes_, svm])
   return new_library
 
@@ -163,19 +196,20 @@ def identify_face(face_pixels, library=None, threshold=0.7):
   face_row = in_encoder.transform(face_row)
   if len(label_library) >= 2:
     prediction = svm.predict(face_row)
+    prediction = out_encoder.inverse_transform(prediction)
   elif len(label_library) == 0:
     prediction = ["Unknown"]
     return prediction
   else:
     prediction = out_encoder.classes_[0]
+    
   ref_index = np.where(label_library == prediction)
-  ref_face = face_library[ref_index][0]
+  ref_face = face_library[ref_index]
   if distance(ref_face, face) < threshold:
-    prediction = out_encoder.inverse_transform(prediction)
+    return prediction
   else:
     prediction = ["Unknown"]
-  return prediction
-
+    return prediction
 # Identify and return classifications for ALL faces detected in an image
 def identify_all(image_array, library=None, threshold=0.7):
   faces = extract_faces(image_array)

@@ -1,0 +1,208 @@
+* {
+  transition: all 0.2s;
+  transition-timing-function: all ease-in-out;
+}
+/* Space for future custom css; Please use materialize wherever possible */
+.small {
+  grid-column: span 1;
+  grid-row-end: span 1;
+}
+.medium {
+   grid-column: span 2;
+   grid-row: span 2;
+ }
+.large {
+   grid-column: span 3;
+   grid-row: span 3;
+}
+.wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  grid-auto-rows: 100px;
+  grid-gap: 10px;
+  grid-auto-flow: dense;
+}
+
+.wrapper {
+}
+
+.wrapper > div {
+    border-radius: 5px;
+    background-color: #FFFFFF;
+    padding: 1em;
+    color: #212121;
+}
+
+#mapid {
+  height: 500px;
+}
+
+#plotwrapper {
+  display: none;
+}
+
+.switch {
+  order: 1;
+}
+
+#mapid {
+  border-radius: 5px;
+}
+
+.excontainer {
+  padding: 0 15% 0 15%;
+}
+
+.editplot {
+  order: 2;
+}
+
+.controls {
+  display: flex;
+  padding: 5px;
+}
+
+.date {
+  color: #FFC107;
+}
+
+.tabs .indicator {
+  background-color: #FFC107;
+}
+
+
+#ultimatecontainer {
+  position: absolute;
+  background-image: url(design/assets/farmbg.jpg);
+  animation-name: slidein;
+  animation-duration: 1s;
+  animation-delay: 1s;
+  /* transform: translateX(-100%); */
+}
+
+#cropyieldbtn {
+  margin-top: 10px;
+}
+
+/* @keyframes slidein {
+    from {transform: translateX(-100%);}
+    to {transform: translateX(0%);}
+}
+*/
+
+.gridcard {
+  opacity: 0;
+  text-align: center;
+  font-size: 12pt;
+  display:block;
+}
+.iwantdie{
+  padding:0
+  overflow:hidden;
+}
+.iwantdie:hover > .gridcard{
+  opacity: 100;
+  text-align: center;
+  font-size: 12pt;
+  display:block;
+}
+.small:hover >.gridcard{
+  opacity:0;
+}
+#datacontainer {
+  opacity: 0;
+}
+
+.push {
+  margin-left: auto;
+}
+.editbtn {
+  margin: 10px;
+}
+.finisheditbtn {
+  margin: 10px;
+}
+.switch {
+  padding-top: 10px;
+}
+#card1date{
+  color: #FFC107;
+
+}
+#card2date{
+  color: #FFC107;
+
+}
+
+.liveVideo{
+    height: 100%;
+    width: 100%;
+    -webkit-transform: scaleX(-1);
+}
+
+.closeButton{
+    position: absolute;
+    height: 2em;
+    width: 2em;
+    top: calc(5% - 1.5em);
+    left: 1em;
+    z-index: 1000;
+    border-radius: 2em;
+    background: rgba(199, 43, 19,0);
+    transition: background 500ms;
+}
+
+.theatreMode{
+    position: absolute;
+    height: 2em;
+    width: 2em;
+    top: calc(5% - 1.5em);
+    left: 4em;
+    z-index: 1000;
+    background: rgba(19, 64, 199,0);
+    transition: background 500ms;
+}
+
+.toggleVideoSource{
+    position: absolute;
+    border-top: 1em solid transparent;
+	border-left: 2em solid transparent;
+	border-bottom: 1em solid transparent;
+    top: calc(5% - 1.5em);
+    left: 7em;
+    z-index: 1000;
+    transition: border-left 500ms;
+}
+
+.toggleVideoSource:hover{
+    border-left: 2em solid rgba(255, 207, 3, 0.7);
+}
+
+.closeButton:hover{
+    background: rgba(255, 0, 0, 0.5);
+}
+
+.theatreMode:hover{
+    background: rgba(19, 64, 199, 0.7);
+}
+
+.dragableZone{
+    position: absolute;
+    -webkit-app-region: drag;
+    z-index: 1000;
+    height: 100%;
+    width: 50%;
+    font-size: 5em;
+    line-height: 9em;
+    font-family: impact, ubuntu, helvetica;
+    left:50%;
+    text-align: center;
+    background-color: rgba(0,0,0,0);
+    color: rgba(0, 0, 0, 0);
+    transition: background-color 500ms, color 500ms;
+}
+
+.dragableZone:hover{
+    background-color: rgba(0, 0, 0,0.5);
+    color: rgba(0, 0, 0,1);
+}
