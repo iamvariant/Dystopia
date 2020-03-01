@@ -130,6 +130,39 @@ def add_face(face_pixels, label, library=None):
   new_library = list([new_face_library, new_label_library, out_encoder.classes_, svm])
   return new_library
 
+def add_person(face_pixel_list, label, library=None):
+  if library is None:
+    face_library = np.empty((0,128))
+    label_library = np.empty((0,))
+    out_encoder = LabelEncoder()
+    out_encoder.classes_ = []
+  else:
+    face_library = library[0]
+    label_library = library[1]
+    out_encoder = LabelEncoder()
+    out_encoder.classes_ = library[2]
+  for i in face_pixel_list:
+    face = embed_face(i[0])
+    face = np.expand_dims(face, axis=0)
+    face_library = np.append(face_library, face, axis=0)
+    label_library = np.append(label_library, label)
+  
+  # normalise input vectors  
+  in_encoder = Normalizer(norm='l2')
+  encoded_face_library = in_encoder.transform(face_library)
+  # label encode targets
+  out_encoder.fit(label_library)
+  encoded_label_library = out_encoder.transform(label_library)
+  # fit model
+  if len(out_encoder.classes_) >= 2:
+    svm = SVC(kernel='linear')
+    svm.fit(encoded_face_library, encoded_label_library)
+  else:
+    svm = None
+  
+  new_library = list([face_library, label_library, out_encoder.classes_, svm])
+  return new_library
+
 def remove_face(label, library=None):
   if library is None:
     return
