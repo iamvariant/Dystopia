@@ -47,7 +47,7 @@ def process_frame():
 	# read thus far
 	# md = SingleMotionDetector(accumWeight=0.1)
 	total = 0
-
+	font = cv2.FONT_HERSHEY_SIMPLEX
 	# # loop over frames from the video stream
 	while True:
 		# read the next frame from the video stream, resize it,
@@ -66,10 +66,13 @@ def process_frame():
 	# 	# number to construct a reasonable background model, then
 	# 	# continue to process the frame
 		if total > frameCount:
-			# detect motion in the image
-			cv2.rectangle(frame, (50,100), (100, 50), (0, 0, 255), 2)
-			# cv2.FONT_HERSHEY_SIMPLEX
-			# cv2.putText(frame,'Hack Projects',(50,100), font, 1,(255,255,255),2)
+			boxes, scores = facedetect(test_copy)
+			for i in boxes:
+				y1, x1, y2, x2 = i
+				cv2.rectangle(frame, (x1, y2), (x2, y1), (0, 255, 0), 2)
+			#cv2.rectangle(frame, (50,100), (100, 50), (0, 0, 255), 2)
+			#cv2.putText(frame,'Hack Projects',(50,100), font, 1,(255,255,255),2)
+			
 		total += 1
 
 	# 	# acquire the lock, set the output frame, and release the
