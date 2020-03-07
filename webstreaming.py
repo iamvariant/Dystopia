@@ -65,13 +65,22 @@ def process_frame():
 	# 	# if the total number of frames has reached a sufficient
 	# 	# number to construct a reasonable background model, then
 	# 	# continue to process the frame
-		if total > frameCount:
-			boxes, scores = facedetect(test_copy)
+
+		if 'identification' in locals():
+			count = 0
 			for i in boxes:
 				y1, x1, y2, x2 = i
 				cv2.rectangle(frame, (x1, y2), (x2, y1), (0, 255, 0), 2)
+				cv2.putText(frame,identification[count][0],(x1, y1), font, 1, (0, 255, 0), 2)
+				count = count+1
+
+		if total > frameCount:
+			identification = identify_all(frame, library)
+			boxes, scores = facedetect(frame)
+			
+
 			#cv2.rectangle(frame, (50,100), (100, 50), (0, 0, 255), 2)
-			#cv2.putText(frame,'Hack Projects',(50,100), font, 1,(255,255,255),2)
+			total = 0
 			
 		total += 1
 
