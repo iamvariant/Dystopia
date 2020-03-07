@@ -24,7 +24,7 @@ def index():
 #face uploader (manual)
 @app.route('/faces')
 def upload_face():
-    return render_template('tester.html')
+    return render_template('face_form.html')
 
 #face parser
 @app.route('/faces/add_face',methods=["POST"])
