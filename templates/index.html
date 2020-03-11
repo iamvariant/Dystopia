@@ -30,70 +30,46 @@
     <div class="section no-pad-bot">
       <div class="container">
         <br><br>
-        <h1 class="header center teal-text text-lighten-2">FaceHelper</h1>
+        <h1 class="header center text-lighten-2">FaceHelper</h1>
         <div class="row center">
-          <h5 class="header col s12 light">A fast facial recognition management system</h5>
+          <h5 class="header col s12">A fast facial recognition management system</h5>
         </div>
-        <div class="row center">
+        <!-- <div class="row center">
           <a href="http://materializecss.com/getting-started.html" id="download-button" class="btn-large waves-effect waves-light teal lighten-1">Get Started</a>
-        </div>
+        </div> -->
         <br><br>
-
+        <div class="row black-text">
+          <div class="card-panel hoverable col s12 m4">
+            <div class="icon-block">
+              <h2 class="center brown-text"><i class="material-icons">group</i></h2>
+              <h5 class="center center-align">Manage Faces</h5>
+  
+              <p class="light center-align">View and manage existing faces</p>
+            </div>
+          </div>
+          <div class="card-panel col s2 m4 hoverable" onclick="location.href='/faces'">
+            <div class="icon-block">
+              <h2 class="center brown-text"><i class="material-icons" >add</i></h2>
+              <h5 class="center center-align">Add Faces</h5>
+  
+              <p class="light center-align">Add a new face</p>
+            </div>
+          </div>
+  
+          <div class="col s12 m4 card-panel hoverable">
+            <div class="icon-block">
+              <h2 class="center brown-text"><i class="material-icons">settings</i></h2>
+              <h5 class="center center-align">Settings</h5>
+  
+              <p class="light center-align">Configure and Modify</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="parallax"><img src="../static/images/background1.jpg" alt="Chuttersnap on Unsplash"></div>
   </div>
 
-
-  <div class="container">
-    <div class="section">
-      <!--   Icon Section   -->
-      <div class="row">
-        <div class="card-panel hoverable col s12 m4">
-          <div class="icon-block">
-            <h2 class="center brown-text"><i class="material-icons">group</i></h2>
-            <h5 class="center center-align">Manage Faces</h5>
-
-            <p class="light center-align">View and manage existing faces</p>
-          </div>
-        </div>
-        <div class="card-panel col s2 m4 hoverable" onclick="location.href='/faces'">
-          <div class="icon-block">
-            <h2 class="center brown-text"><i class="material-icons" >add</i></h2>
-            <h5 class="center center-align">Add Faces</h5>
-
-            <p class="light center-align">Add a new face</p>
-          </div>
-        </div>
-
-        <div class="col s12 m4 card-panel hoverable">
-          <div class="icon-block">
-            <h2 class="center brown-text"><i class="material-icons">settings</i></h2>
-            <h5 class="center center-align">Settings</h5>
-
-            <p class="light center-align">Configure and Modify</p>
-          </div>
-        </div>
-      </div>
-
-    </div>
-    <div class="divider"></div>
-    <div class="section">
-      <h1>Not Big Brother</h1>
-      <img src="{{ url_for('video_feed') }}">
-    </div>
-  </div>
-
-  <div class="parallax-container valign-wrapper">
-    <div class="section no-pad-bot">
-      <div class="container">
-        <div class="row center">
-          <h1 class="header col s12">We are not stealing your data</h1>
-        </div>
-      </div>
-    </div>
-    <div class="parallax"><img src="../static/images/background2.jpg" alt="Unsplashed background img 2"></div>
-  </div>
 
   <div class="container">
     <div class="section">
@@ -108,6 +84,18 @@
 
     </div>
   </div>
+
+  <div class="parallax-container valign-wrapper">
+    <div class="parallax"><img src="../static/images/background2.jpg" alt="Unsplashed background img 2"></div>
+    <div class="container">
+      <div class="section">
+        <h2 class="header col s12 center-align">Live Video Feed</h2>
+        <img src="{{ url_for('video_feed') }}">
+      </div>
+    </div>
+  </div>
+
+
 
 
   <div class="parallax-container valign-wrapper">
